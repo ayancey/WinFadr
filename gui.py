@@ -11,10 +11,12 @@ class FadrFrame(wx.Frame):
 		text.SetFont(font)
 
 		wx.TextCtrl(self.panel, value="Win+/", pos=(150,50))
+
+		self.Bind(wx.EVT_TEXT, self.OnExit)
 		self.Show()
 
 	def OnExit(self, event):
-		exit()
+		print 'yes'
 
 
 app = wx.App(False)
