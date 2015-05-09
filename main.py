@@ -36,7 +36,10 @@ def OnKeyboardEvent(event):
 
 	if HotKey == event.Key:
 		print 'KEY PRESSED'
+	
+	print event.Key
 	return True
+
 
 
 hm = pyHook.HookManager()
