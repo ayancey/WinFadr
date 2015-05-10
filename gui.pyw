@@ -9,20 +9,6 @@ hotkey = None
 
 # http://sourceforge.net/p/pyhook/wiki/PyHook_Tutorial/
 def OnKeyboardEvent(event):
-    print 'MessageName:',event.MessageName
-    print 'Message:',event.Message
-    print 'Time:',event.Time
-    print 'Window:',event.Window
-    print 'WindowName:',event.WindowName
-    print 'Ascii:', event.Ascii, chr(event.Ascii)
-    print 'Key:', event.Key
-    print 'KeyID:', event.KeyID
-    print 'ScanCode:', event.ScanCode
-    print 'Extended:', event.Extended
-    print 'Injected:', event.Injected
-    print 'Alt', event.Alt
-    print 'Transition', event.Transition
-    print '---'
 
     print "TextCtrl" in str(wx.Window.FindFocus())
     hotkey.SetValue(event.Key)
@@ -43,10 +29,12 @@ class FadrFrame(wx.Frame):
 		text.SetFont(font)
 
 		hotkey = wx.TextCtrl(self.panel, value="Win+/", pos=(150,50))
+
+		self.Bind(wx.EVT_CLOSE, self.OnExit)
 		self.Show()
 
 	def OnExit(self, event):
-		print 'lol'
+		exit()
 
 
 app = wx.App(False)
