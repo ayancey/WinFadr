@@ -1,21 +1,4 @@
 import wx
-import pythoncom, pyHook
-import time
-
-FadeFocusKey = "Win+Oem_2"
-WinDown = False
-
-hotkey = None
-
-# http://sourceforge.net/p/pyhook/wiki/PyHook_Tutorial/
-def OnKeyboardEvent(event):
-
-    print "TextCtrl" in str(wx.Window.FindFocus())
-    hotkey.SetValue(event.Key)
-
-# return True to pass the event to other handlers
-    return True
-
 
 class FadrFrame(wx.Frame):
 
@@ -28,7 +11,16 @@ class FadrFrame(wx.Frame):
 		font = wx.Font(12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False)
 		text.SetFont(font)
 
+		text = wx.StaticText(self.panel, label="CTRL+, ALT+, WIN+, SHIFT+", pos=(126,75))
+		font = wx.Font(8, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False)
+		text.SetFont(font)
+
 		hotkey = wx.TextCtrl(self.panel, value="Win+/", pos=(150,50))
+
+		thebutton = wx.Button(self.panel,label="Set", pos=(260,49))
+		font = wx.Font(12, wx.DEFAULT, wx.NORMAL, wx.NORMAL, False)
+		thebutton.SetFont(font)
+		thebutton.Bind(wx.EVT_BUTTON, self.OnSet)
 
 		self.Bind(wx.EVT_CLOSE, self.OnExit)
 		self.Show()
@@ -36,17 +28,16 @@ class FadrFrame(wx.Frame):
 	def OnExit(self, event):
 		exit()
 
+	def OnSet(self, event):
+		# Grabs the old dumb value of the textbox, destroys the textbox, and makes a new read-only textbox
+		global hotkey
+		oldvalue = hotkey.GetValue()
+		hotkey.Destroy()
+		hotkey = wx.TextCtrl(self.panel, value=oldvalue, pos=(150,50), style= wx.TE_READONLY)
+
 
 app = wx.App(False)
 
 frame = FadrFrame(None, "WinFadr")
-
-hm = pyHook.HookManager()
-hm.KeyDown = OnKeyboardEvent
-hm.KeyUp = OnKeyboardEvent
-hm.HookKeyboard()
-
-# Get hooked kid
-pythoncom.PumpMessages()
 
 app.MainLoop()
